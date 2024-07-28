@@ -1,0 +1,126 @@
+hp@RUJAN c:\xampp
+# mysql -u root
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 15
+Server version: 10.4.32-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> create database CLIENT;
+Query OK, 1 row affected (0.001 sec)
+
+MariaDB [(none)]> use CLIENT;
+Database changed
+MariaDB [CLIENT]> create table client_master(
+    -> ClientNO,
+    -> Name,
+    -> Address,
+    -> City,
+    -> State,
+    -> bal_due);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '
+Name,
+Address,
+City,
+State,
+bal_due)' at line 2
+MariaDB [CLIENT]> create table client_master(
+    -> ClientNO,
+    ->  Name,
+    ->  Address,
+    -> City,
+    -> State,
+    -> bal_due
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '
+ Name,
+ Address,
+City,
+State,
+bal_due
+)' at line 2
+MariaDB [CLIENT]> create table client_master(
+    -> ClientNO VARCHAR(10) PRIMARY KEY,
+    ->  Name VARCHAR(50),
+    -> Address VARCHAR(100),
+    ->  City VARCHAR(50),
+    -> State VARCHAR(50),
+    -> Bal_Due DECIMAL(10, 2));
+Query OK, 0 rows affected (0.030 sec)
+
+MariaDB [CLIENT]> insert into client_master(ClientNO, Name, Address, City, State, Bal_Due)
+    -> values
+    -> ('C101', 'Rujan Subedi', 'Lakeside', 'Pokhara', 'Gandaki'
+, 4500.00),
+    -> ('C102', 'Sita Thapa', 'Koteshowr', 'Kathmandu', 'Bagmati
+', 6500.00),
+    -> ('C103', 'Shyam Magar', 'Hakimchowk', 'Chitwan', 'Narayan
+i', 7000.00),
+    -> ('C104', 'Dinesh Thapa', 'Boudha', 'Kathmandu', 'Bagmati', 3000.00),
+    -> ('C123', 'Kamal Lama', 'Damside', 'Pokhara', 'Gandaki', 6000.00);
+Query OK, 5 rows affected (0.011 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+MariaDB [CLIENT]> SELECT * FROM Client_Master;
++----------+--------------+------------+-----------+----------+---------+
+| ClientNO | Name         | Address    | City      | State    | Bal_Due |
++----------+--------------+------------+-----------+----------+---------+
+| C101     | Rujan Subedi | Lakeside   | Pokhara   | Gandaki  | 4500.00 |
+| C102     | Sita Thapa   | Koteshowr  | Kathmandu | Bagmati  | 6500.00 |
+| C103     | Shyam Magar  | Hakimchowk | Chitwan   | Narayani | 7000.00 |
+| C104     | Dinesh Thapa | Boudha     | Kathmandu | Bagmati  | 3000.00 |
+| C123     | Kamal Lama   | Damside    | Pokhara   | Gandaki  | 6000.00 |
++----------+--------------+------------+-----------+----------+---------+
+5 rows in set (0.001 sec)
+
+MariaDB [CLIENT]> SELECT Name FROM Client_Master WHERE Bal_Due > 5000;
++-------------+
+| Name        |
++-------------+
+| Sita Thapa  |
+| Shyam Magar |
+| Kamal Lama  |
++-------------+
+3 rows in set (0.001 sec)
+
+MariaDB [CLIENT]> PDATE Client_Master SET Bal_Due = 5100 WHERE ClientNO = 'C123';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'PDATE Client_Master SET Bal_Due = 5100 WHERE ClientNO = 'C123'' at line 1
+MariaDB [CLIENT]> UPDATE Client_Master SET Bal_Due = 5100 WHERE
+ClientNO = 'C123';
+Query OK, 1 row affected (0.010 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [CLIENT]> SELECT * FROM Client_Master;
++----------+--------------+------------+-----------+----------+---------+
+| ClientNO | Name         | Address    | City      | State    | Bal_Due |
++----------+--------------+------------+-----------+----------+---------+
+| C101     | Rujan Subedi | Lakeside   | Pokhara   | Gandaki  | 4500.00 |
+| C102     | Sita Thapa   | Koteshowr  | Kathmandu | Bagmati  | 6500.00 |
+| C103     | Shyam Magar  | Hakimchowk | Chitwan   | Narayani | 7000.00 |
+| C104     | Dinesh Thapa | Boudha     | Kathmandu | Bagmati  | 3000.00 |
+| C123     | Kamal Lama   | Damside    | Pokhara   | Gandaki  | 5100.00 |
++----------+--------------+------------+-----------+----------+---------+
+5 rows in set (0.000 sec)
+
+MariaDB [CLIENT]> ALTER TABLE Client_Master RENAME TO Client12;
+Query OK, 0 rows affected (0.020 sec)
+
+MariaDB [CLIENT]> SELECT ClientNO, Name, Address, City, State, Bal_Due AS BALANCE FROM Client12;
++----------+--------------+------------+-----------+----------+---------+
+| ClientNO | Name         | Address    | City      | State    | BALANCE |
++----------+--------------+------------+-----------+----------+---------+
+| C101     | Rujan Subedi | Lakeside   | Pokhara   | Gandaki  | 4500.00 |
+| C102     | Sita Thapa   | Koteshowr  | Kathmandu | Bagmati  | 6500.00 |
+| C103     | Shyam Magar  | Hakimchowk | Chitwan   | Narayani | 7000.00 |
+| C104     | Dinesh Thapa | Boudha     | Kathmandu | Bagmati  | 3000.00 |
+| C123     | Kamal Lama   | Damside    | Pokhara   | Gandaki  | 5100.00 |
++----------+--------------+------------+-----------+----------+---------+
+5 rows in set (0.004 sec)
+
+MariaDB [CLIENT]> \q
+Bye
+
+hp@RUJAN c:\xampp
+#

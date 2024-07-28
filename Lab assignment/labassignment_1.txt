@@ -1,0 +1,104 @@
+hp@RUJAN c:\xampp
+# mysql -u root
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 11
+Server version: 10.4.32-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> create database employees;
+Query OK, 1 row affected (0.001 sec)
+
+MariaDB [(none)]> use employees;
+Database changed
+
+MariaDB [employees]> create table employees(Employee_ID INT PRIMARY KEY,First_Name VARCHAR(20),Last_Name VARCHAR(20),Email VARCHAR(50),Phone_Number VARCHAR(15),Hire_Date DATE,Job_ID VARCHAR(10),Emp_Salary DECIMAL(10, 2),Commission_Pct DECIMAL(5, 2),Manager_ID INT,Department_ID INT);
+Query OK, 0 rows affected (0.018 sec)
+
+MariaDB [employees]>  INSERT INTO EMPLOYEES (Employee_ID, First_Name, Last_Name, Email, Phone_Number, Hire_Date, Job_ID, Emp_Salary, Commission_Pct, Manager_ID, Department_ID)
+    -> values
+    -> (1, 'Rujan', 'Subedi', 'rujansubedi@gmail.com', '9800000001', '2023-01-15', 'J101', 50000.00, 0.05, 101, 10),
+    -> (2, 'Jane', 'Smith', 'jane.smith@gmail.com', '2345678901', '2023-03-22', 'J102', 4800.00, 0.10, 102, 20),
+    -> (3, 'Rita', 'Shrestha', 'rita.shrestha@gmail.com', '9841234567', '2023-07-11', 'J103', 5200.00, 0.15, 103, 30),
+    -> (4, 'Doma', 'Sherpa', 'doma.sherpa@gmail.com', '9851234568', '2023-05-10', 'J104', 6000.00, 0.20, 104, 60),
+    -> (5, 'Pratik', 'Dhakal', 'pratik.dhakal@gmail.com', '9861234569', '2023-09-01', 'J105', 4700.00, 0.25, 105, 70);
+Query OK, 5 rows affected (0.063 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+MariaDB [employees]> select * from employees;
++-------------+------------+-----------+-------------------------+--------------+------------+--------+------------+----------------+------------+---------------+
+| Employee_ID | First_Name | Last_Name | Email
+ | Phone_Number | Hire_Date  | Job_ID | Emp_Salary | Commission_Pct | Manager_ID | Department_ID |
++-------------+------------+-----------+-------------------------+--------------+------------+--------+------------+----------------+------------+---------------+
+|           1 | Rujan      | Subedi    | rujansubedi@gmail.com   | 9800000001   | 2023-01-15 | J101   |   50000.00 |           0.05 |        101 |            10 |
+|           2 | Jane       | Smith     | jane.smith@gmail.com    | 2345678901   | 2023-03-22 | J102   |    4800.00 |           0.10 |        102 |            20 |
+|           3 | Rita       | Shrestha  | rita.shrestha@gmail.com | 9841234567   | 2023-07-11 | J103   |    5200.00 |           0.15 |        103 |            30 |
+|           4 | Doma       | Sherpa    | doma.sherpa@gmail.com   | 9851234568   | 2023-05-10 | J104   |    6000.00 |           0.20 |        104 |            60 |
+|           5 | Pratik     | Dhakal    | pratik.dhakal@gmail.com | 9861234569   | 2023-09-01 | J105   |    4700.00 |           0.25 |        105 |            70 |
++-------------+------------+-----------+-------------------------+--------------+------------+--------+------------+----------------+------------+---------------+
+5 rows in set (0.000 sec)
+
+MariaDB [employees]> SELECT Employee_ID, First_Name, Last_Name, Emp_Salary FROM EMPLOYEES;
++-------------+------------+-----------+------------+
+| Employee_ID | First_Name | Last_Name | Emp_Salary |
++-------------+------------+-----------+------------+
+|           1 | Rujan      | Subedi    |   50000.00 |
+|           2 | Jane       | Smith     |    4800.00 |
+|           3 | Rita       | Shrestha  |    5200.00 |
+|           4 | Doma       | Sherpa    |    6000.00 |
+|           5 | Pratik     | Dhakal    |    4700.00 |
++-------------+------------+-----------+------------+
+5 rows in set (0.001 sec)
+
+MariaDB [employees]> SELECT First_Name, Last_Name FROM EMPLOYEES WHERE Emp_Salary >= 4800;
++------------+-----------+
+| First_Name | Last_Name |
++------------+-----------+
+| Rujan      | Subedi    |
+| Jane       | Smith     |
+| Rita       | Shrestha  |
+| Doma       | Sherpa    |
++------------+-----------+
+4 rows in set (0.001 sec)
+
+MariaDB [employees]>  SELECT * FROM EMPLOYEES WHERE Last_Name = 'Shestha';
+Empty set (0.001 sec)
+
+MariaDB [employees]>  SELECT * FROM EMPLOYEES WHERE Last_Name = 'Shrestha';
++-------------+------------+-----------+-------------------------+--------------+------------+--------+------------+----------------+------------+---------------+
+| Employee_ID | First_Name | Last_Name | Email
+ | Phone_Number | Hire_Date  | Job_ID | Emp_Salary | Commission_Pct | Manager_ID | Department_ID |
++-------------+------------+-----------+-------------------------+--------------+------------+--------+------------+----------------+------------+---------------+
+|           3 | Rita       | Shrestha  | rita.shrestha@gmail.com | 9841234567   | 2023-07-11 | J103   |    5200.00 |           0.15 |        103 |            30 |
++-------------+------------+-----------+-------------------------+--------------+------------+--------+------------+----------------+------------+---------------+
+1 row in set (0.000 sec)
+
+MariaDB [employees]> SELECT First_Name, Last_Name FROM EMPLOYEES WHERE Department_ID IN (60, 70, 80);
++------------+-----------+
+| First_Name | Last_Name |
++------------+-----------+
+| Doma       | Sherpa    |
+| Pratik     | Dhakal    |
++------------+-----------+
+2 rows in set (0.001 sec)
+
+MariaDB [employees]> SELECT DISTINCT Manager_ID FROM EMPLOYEES;
++------------+
+| Manager_ID |
++------------+
+|        101 |
+|        102 |
+|        103 |
+|        104 |
+|        105 |
++------------+
+5 rows in set (0.001 sec)
+
+MariaDB [employees]>\q
+Bye
+
+hp@RUJAN c:\xampp
+#
+

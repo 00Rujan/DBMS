@@ -1,0 +1,82 @@
+hp@RUJAN c:\xampp
+# mysql -u root
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 16
+Server version: 10.4.32-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> create database school;
+Query OK, 1 row affected (0.002 sec)
+
+MariaDB [(none)]> use school;
+Database changed
+MariaDB [school]> create table Teacher(
+    -> Id INT PRIMARY KEY,
+    -> Name VARCHAR(50),
+    ->  DeptNo INT,
+    -> Date_of_joining DATE,
+    -> DeptName VARCHAR(50),
+    -> Location VARCHAR(50),
+    -> Salary DECIMAL(10, 2));
+Query OK, 0 rows affected (0.023 sec)
+
+MariaDB [school]> insert into Teacher(Id, Name, DeptNo, Date_of_joining, DeptName, Location, Salary)
+    -> values
+    -> (1, 'Raj Thapa', 1, '2010-01-15', 'Mathematics', 'Kathmandu', 50000.00),
+    -> (2, 'Saraswati Sharma', 2, '2012-03-22', 'Commerce', 'Pok
+hara', 48000.00),
+    -> (3, 'Bimal Tamang', 1, '2018-07-11', 'Mathematics', 'Chit
+wan', 52000.00),
+    -> (4, 'Ganag Buda Magar', 3, '2016-05-10', 'Science', 'Kath
+mandu', 60000.00),
+    -> (5, 'Sita Rai', 2, '2020-09-01', 'Commerce', 'Pokhara', 47000.00);
+Query OK, 5 rows affected (0.009 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+MariaDB [school]> UPDATE Teacher SET Salary = Salary * 1.25 WHERE DeptName = "Mathematics"
+    -> \c
+MariaDB [school]> UPDATE Teacher SET Salary = Salary * 1.25 WHERE DeptName = "Mathematics";
+Query OK, 2 rows affected (0.007 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+MariaDB [school]> rollback;
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [school]> select * from Teacher;
++----+------------------+--------+-----------------+-------------+-----------+----------+
+| Id | Name             | DeptNo | Date_of_joining | DeptName    | Location  | Salary   |
++----+------------------+--------+-----------------+-------------+-----------+----------+
+|  1 | Raj Thapa        |      1 | 2010-01-15      | Mathematics | Kathmandu | 62500.00 |
+|  2 | Saraswati Sharma |      2 | 2012-03-22      | Commerce    | Pokhara   | 48000.00 |
+|  3 | Bimal Tamang     |      1 | 2018-07-11      | Mathematics | Chitwan   | 65000.00 |
+|  4 | Ganag Buda Magar |      3 | 2016-05-10      | Science     | Kathmandu | 60000.00 |
+|  5 | Sita Rai         |      2 | 2020-09-01      | Commerce    | Pokhara   | 47000.00 |
++----+------------------+--------+-----------------+-------------+-----------+----------+
+5 rows in set (0.000 sec)
+
+MariaDB [school]> UPDATE Teacher SET Salary = Salary * 1.15 WHERE DeptName = "Mathematics";
+Query OK, 2 rows affected (0.005 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+MariaDB [school]> select * from Teacher;
++----+------------------+--------+-----------------+-------------+-----------+----------+
+| Id | Name             | DeptNo | Date_of_joining | DeptName    | Location  | Salary   |
++----+------------------+--------+-----------------+-------------+-----------+----------+
+|  1 | Raj Thapa        |      1 | 2010-01-15      | Mathematics | Kathmandu | 71875.00 |
+|  2 | Saraswati Sharma |      2 | 2012-03-22      | Commerce    | Pokhara   | 48000.00 |
+|  3 | Bimal Tamang     |      1 | 2018-07-11      | Mathematics | Chitwan   | 74750.00 |
+|  4 | Ganag Buda Magar |      3 | 2016-05-10      | Science     | Kathmandu | 60000.00 |
+|  5 | Sita Rai         |      2 | 2020-09-01      | Commerce    | Pokhara   | 47000.00 |
++----+------------------+--------+-----------------+-------------+-----------+----------+
+5 rows in set (0.000 sec)
+
+MariaDB [school]> commit;
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [school]> \q
+Bye
+
+hp@RUJAN c:\xampp

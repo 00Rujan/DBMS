@@ -1,0 +1,110 @@
+
+hp@RUJAN c:\xampp
+# mysql -u root
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 15
+Server version: 10.4.32-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> use employees;
+Database changed
+MariaDB [employees]> select e1.ename
+    -> from emp e1
+    -> join emp e2 on e1.deptno=e2.deptno and e1.empno!=e2.empno
+    -> join dept d on e1.deptno=d.deptno
+    -> where d.loc='Kathmandu';
+Empty set (0.002 sec)
+
+
+MariaDB [employees]> select e1.ename
+    ->
+    -> from emp e1
+    -> join emp e2 on e1.deptno=e2.deptno and e1.empno!=e2.empno
+    -> join dept d on e1.deptno=d.deptno
+    -> ;
++----------------+
+| ename          |
++----------------+
+| Parbati Sharma |
+| Dawa Tamang    |
+| Sajan Shrestha |
+| Rujan Subedi   |
++----------------+
+4 rows in set (0.001 sec)
+
+MariaDB [employees]> select e.ename
+    -> from emp e
+    -> join (
+    -> select deptno ,min(sal) as minsal
+    -> from emp
+    -> group by deptno
+    -> ) sub on e.deptno=sub.deptno and e.sal=sub.minsal;
++----------------+
+| ename          |
++----------------+
+| Dawa Tamang    |
+| Prabha Thapa   |
+| Parbati Sharma |
++----------------+
+3 rows in set (0.005 sec)
+
+MariaDB [employees]> select dname
+    -> from dept
+    -> where deptno not in (select distinct deptno from emp);
+Empty set (0.005 sec)
+
+MariaDB [employees]> select e.*,d.*
+    -> from emp e
+    -> join dept d on e.deptno=d.deptno;
++-------+----------------+---------+------+------------+----------+------+--------+--------+---------+-----------+
+| EmpNo | Ename          | Job     | Mgr  | HireDate   | Sal      | Comm | DeptNo | deptno | dname   | loc       |
++-------+----------------+---------+------+------------+----------+------+--------+--------+---------+-----------+
+|     1 | Rujan Subedi   | Manager | NULL | 1990-02-20 | 60000.00 | NULL |      1 |      1 | hr      | pokhara   |
+|     2 | Sajan Shrestha | Support |    1 | 2004-04-01 | 48000.00 | NULL |      3 |      3 | it      | Butwal    |
+|     3 | Dawa Tamang    | Analyst |    1 | 2012-01-01 | 40000.00 | NULL |      3 |      3 | it      | Butwal    |
+|     4 | Prabha Thapa   | Tester  |    2 | 2014-01-01 | 45000.00 | NULL |      2 |      2 | finance | Kathmandu |
+|     5 | Parbati Sharma | Support |    2 | 2020-01-01 | 50000.00 | NULL |      1 |      1 | hr      | pokhara   |
++-------+----------------+---------+------+------------+----------+------+--------+--------+---------+-----------+
+5 rows in set (0.004 sec)
+
+MariaDB [employees]> select e.ename ,d.dname
+    -> from emp e
+    -> left join dept d on e.deptno=d.deptno;
++----------------+---------+
+| ename          | dname   |
++----------------+---------+
+| Rujan Subedi   | hr      |
+| Sajan Shrestha | it      |
+| Dawa Tamang    | it      |
+| Prabha Thapa   | finance |
+| Parbati Sharma | hr      |
++----------------+---------+
+5 rows in set (0.002 sec)
+
+MariaDB [employees]> select e.ename,d.dname
+    -> from emp e
+    -> right join dept d on e.deptno=d.deptno;
++----------------+---------+
+| ename          | dname   |
++----------------+---------+
+| Rujan Subedi   | hr      |
+| Sajan Shrestha | it      |
+| Dawa Tamang    | it      |
+| Prabha Thapa   | finance |
+| Parbati Sharma | hr      |
++----------------+---------+
+5 rows in set (0.001 sec)
+
+MariaDB [employees]> select*
+    -> from emp
+    -> where sal>(select avg(sal) from emp);
++-------+----------------+---------+------+------------+----------+------+--------+
+| EmpNo | Ename          | Job     | Mgr  | HireDate   | Sal      | Comm | DeptNo |
++-------+----------------+---------+------+------------+----------+------+--------+
+|     1 | Rujan Subedi   | Manager | NULL | 1990-02-20 | 60000.00 | NULL |      1 |
+|     5 | Parbati Sharma | Support |    2 | 2020-01-01 | 50000.00 | NULL |      1 |
++-------+----------------+---------+------+------------+----------+------+--------+
+2 rows in set (0.003 sec)

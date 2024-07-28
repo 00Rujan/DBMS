@@ -1,0 +1,85 @@
+hp@RUJAN c:\xampp
+# mysql -u root
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 17
+Server version: 10.4.32-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> create database Shop;
+Query OK, 1 row affected (0.001 sec)
+
+MariaDB [(none)]> use Shop;
+Database changed
+MariaDB [Shop]> create table sales
+    -> (
+    -> Sales_No INT PRIMARY KEY,
+    -> Sales_Name VARCHAR(50),
+    -> Branch VARCHAR(50),
+    -> Sales_Amount DECIMAL(10, 2),
+    -> DOB DATE);
+Query OK, 0 rows affected (0.026 sec)
+
+MariaDB [Shop]> insert into sales(Sales_No, Sales_Name, Branch, Sales_Amount, DOB)
+    -> values
+    -> (1, 'Ram Bahadur', 'East', 50000.00, '1990-12-21'),
+    -> (2, 'Gopal Magar', 'West', 48000.00, '1985-06-15'),
+    -> (3, 'Gopal Bogati', 'East', 52000.00, '1978-12-02'),
+    -> (4, 'Maya Norge Sherpa', 'North', 60000.00, '1995-12-09')
+,
+    -> (5, 'Bitikal Rai', 'South', 47000.00, '1990-09-01');
+Query OK, 5 rows affected (0.009 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+MariaDB [Shop]> select branch,sum(sales_amount) as total_sales_a
+mount from sales group by branch;
++--------+--------------------+
+| branch | total_sales_amount |
++--------+--------------------+
+| East   |          102000.00 |
+| North  |           60000.00 |
+| South  |           47000.00 |
+| West   |           48000.00 |
++--------+--------------------+
+4 rows in set (0.001 sec)
+
+MariaDB [Shop]> SELECT Branch,AVG(Sales_Amount) AS Average_Sales_Amount FROM SALES GROUP BY Branch;
++--------+----------------------+
+| Branch | Average_Sales_Amount |
++--------+----------------------+
+| East   |         51000.000000 |
+| North  |         60000.000000 |
+| South  |         47000.000000 |
+| West   |         48000.000000 |
++--------+----------------------+
+4 rows in set (0.001 sec)
+
+MariaDB [Shop]> SELECT Sales_Name,DATE_FORMAT(DOB,'%d-%b-%y') AS DOB FROM Sales WHERE MONTH(DOB) = 12;
++-------------------+-----------+
+| Sales_Name        | DOB       |
++-------------------+-----------+
+| Ram Bahadur       | 21-Dec-90 |
+| Gopal Bogati      | 02-Dec-78 |
+| Maya Norge Sherpa | 09-Dec-95 |
++-------------------+-----------+
+3 rows in set (0.001 sec)
+
+MariaDB [Shop]> SELECT Sales_Name,DATE_FORMAT(DOB,'%d-%b-%y') AS DOB FROM Sales ORDER BY MONTH(DOB);
++-------------------+-----------+
+| Sales_Name        | DOB       |
++-------------------+-----------+
+| Gopal Magar       | 15-Jun-85 |
+| Bitikal Rai       | 01-Sep-90 |
+| Ram Bahadur       | 21-Dec-90 |
+| Gopal Bogati      | 02-Dec-78 |
+| Maya Norge Sherpa | 09-Dec-95 |
++-------------------+-----------+
+5 rows in set (0.001 sec)
+
+MariaDB [Shop]> \q
+Bye
+
+hp@RUJAN c:\xampp
+#

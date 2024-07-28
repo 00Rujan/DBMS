@@ -1,0 +1,132 @@
+hp@RUJAN c:\xampp
+# mysql -u root
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 26
+Server version: 10.4.32-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> create database enterprise;
+Query OK, 1 row affected (0.001 sec)
+
+MariaDB [(none)]> use enterprise;
+Database changed
+MariaDB [enterprise]> create table dept(
+    -> deptno int primary key,
+    -> dname varchar(20),
+    -> loc varchar(20));
+Query OK, 0 rows affected (0.025 sec)
+
+MariaDB [enterprise]> create table emp(
+    -> EmpNo INT PRIMARY KEY,
+    ->  Ename VARCHAR(50),
+    -> Job VARCHAR(50),
+    -> Mgr INT,
+    -> HireDate DATE,
+    -> Sal DECIMAL(10, 2),
+    -> Comm DECIMAL(10, 2),
+    ->  DeptNo INT,
+    -> FOREIGN KEY (DeptNo) REFERENCES Dept(DeptNo));
+Query OK, 0 rows affected (0.055 sec)
+
+MariaDB [enterprise]> insert into dept(deptno,dname,loc)
+    -> values
+    -> (1,'hr','pokhara'),
+    -> (2,'finance','Kathmandu'),
+    -> (3,'it','Butwal');
+Query OK, 3 rows affected (0.018 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+MariaDB [enterprise]> insert into emp(empno,ename,job,mgr,hiredate,sal,comm,deptno)
+    -> values
+    -> (1,'Rujan Subedi','Manager',null,'1990-02-20',60000.00,null,1),
+    -> (2,'Sajan Shrestha','Support',1,'2004-04-01',48000.00,null,3)
+    -> (3, 'Dawa Tamang', 'Analyst', 1, '2012-01-01', 40000.00,NULL, 3),
+    -> (4, 'Prabha Thapa', 'Tester', 2, '2014-01-01', 45000.00,NULL, 2),
+    -> (5, 'Parbati Sharma', 'Support', 2, '2020-01-01', 50000.00, NULL,1);
+ERROR 1064 (42000): Yo                                                                      to your MariaDB server version for the ri
+MariaDB [enterprise]>  '(3, 'Dawa Tamang', 'Analyst', 1, '2012-01-01', 40000.00, NULL, 3),
+MariaDB [enterprise]>
+MariaDB [enterprise]>
+MariaDB [enterprise]> insert into emp(empno,ename,job,mgr,hiredate,sal,comm,deptno)
+    ->
+    -> values
+    -> (1,'Rujan Subedi','Manager',null,'1990-02-20',60000.00,null,1),
+    -> (2,'Sajan Shrestha','Support',1,'2004-04-01',48000.00,null,3)
+    -> (3, 'Dawa Tamang', 'Analyst', 1, '2012-01-01', 40000.00, NULL, 3),
+    -> (4, 'Prabha Thapa', 'Tester', 2, '2014-01-01', 45000.00, NULL, 2),
+    -> (5, 'Parbati Sharma', 'Support', 2, '2020-01-01', 50000.00, NULL, 1);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '(3, 'Dawa Tamang', 'Analyst', 1, '2012-01-01', 40000.00, NULL, 3),
+(4, 'Prabh...' at line 6
+MariaDB [enterprise]> insert into emp(empno,ename,job,mgr,hiredate,sal,comm,deptno)
+    -> values
+    -> (1,'Rujan Subedi','Manager',null,'1990-02-20',60000.00,null,1),
+    -> (2,'Sajan Shrestha','Support',1,'2004-04-01',48000.00,null,3),
+    -> (3, 'Dawa Tamang', 'Analyst', 1, '2012-01-01', 40000.00, NULL, 3),
+    -> (4, 'Prabha Thapa', 'Tester', 2, '2014-01-01', 45000.00, NULL, 2),
+    -> (5, 'Parbati Sharma', 'Support', 2, '2020-01-01', 50000.00, NULL, 1);
+Query OK, 5 rows affected (0.010 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+MariaDB [enterprise]> update emp set sal=sal*1.15 where year(cur
+date())-year(hiredate)>30;
+ERROR 2006 (HY000): MySQL server has gone away
+No connection. Trying to reconnect...
+ERROR 2002 (HY000): Can't connect to MySQL server on 'localhost' (10061)
+ERROR: Can't connect to the server
+
+unknown [enterprise]> update emp set sal=sal*1.15 where year(curdate())-year(hiredate)>30;
+No connection. Trying to reconnect...
+Connection id:    8
+Current database: enterprise
+
+Query OK, 1 row affected (0.058 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [enterprise]> select* from emp;
++-------+----------------+---------+------+------------+----------+------+--------+
+| EmpNo | Ename          | Job     | Mgr  | HireDate   | Sal      | Comm | DeptNo |
++-------+----------------+---------+------+------------+----------+------+--------+
+|     1 | Rujan Subedi   | Manager | NULL | 1990-02-20 | 69000.00 | NULL |      1 |
+|     2 | Sajan Shrestha | Support |    1 | 2004-04-01 | 48000.00 | NULL |      3 |
+|     3 | Dawa Tamang    | Analyst |    1 | 2012-01-01 | 40000.00 | NULL |      3 |
+|     4 | Prabha Thapa   | Tester  |    2 | 2014-01-01 | 45000.00 | NULL |      2 |
+|     5 | Parbati Sharma | Support |    2 | 2020-01-01 | 50000.00 | NULL |      1 |
++-------+----------------+---------+------+------------+----------+------+--------+
+5 rows in set (0.001 sec)
+
+MariaDB [enterprise]> select mgr,count(*)as numberofemployees
+    -> from emp
+    -> where mgr is not null
+    -> group by mgr
+    -> order by numberofemployees desc
+    -> limit 1;
++------+-------------------+
+| mgr  | numberofemployees |
++------+-------------------+
+|    1 |                 2 |
++------+-------------------+
+1 row in set (0.001 sec)
+
+MariaDB [enterprise]> create view emp_manager as
+    -> select e1.ename as employee, e2.ename as manager
+    -> from emp e1
+    -> left join emp e2 on e1.mgr=e2.empno;
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [enterprise]> select* from emp;
++-------+----------------+---------+------+------------+----------+------+--------+
+| EmpNo | Ename          | Job     | Mgr  | HireDate   | Sal      | Comm | DeptNo |
++-------+----------------+---------+------+------------+----------+------+--------+
+|     1 | Rujan Subedi   | Manager | NULL | 1990-02-20 | 69000.00 | NULL |      1 |
+|     2 | Sajan Shrestha | Support |    1 | 2004-04-01 | 48000.00 | NULL |      3 |
+|     3 | Dawa Tamang    | Analyst |    1 | 2012-01-01 | 40000.00 | NULL |      3 |
+|     4 | Prabha Thapa   | Tester  |    2 | 2014-01-01 | 45000.00 | NULL |      2 |
+|     5 | Parbati Sharma | Support |    2 | 2020-01-01 | 50000.00 | NULL |      1 |
++-------+----------------+---------+------+------------+----------+------+--------+
+5 rows in set (0.001 sec)
+
+MariaDB [enterprise]> \q
+Bye
